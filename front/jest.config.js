@@ -4,7 +4,7 @@ module.exports = {
         tsConfig: '<rootDir>/src/tsconfig.spec.json'
       }
     },
-
+    testMatch: [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec).[jt]s?(x)" ],
     preset: "jest-preset-angular",
 
     snapshotSerializers: [
