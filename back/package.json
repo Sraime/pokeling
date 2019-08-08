@@ -13,6 +13,7 @@
     "start:test": "NODE_ENV=test nodemon app.js",
     "test": "npm run test:unit",
     "test:unit": "jest ./app/*/*/*.spec.js",
+    "test:unit:watch": "jest --watch ./app/*/*/*.spec.js",
     "test:integration": "jest --runInBand ./test/integration/*.spec.js --config ./test/integration/jest.config.js",
     "linter": "eslint app test statics",
     "linter:fix": "eslint app test statics --fix"
