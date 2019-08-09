@@ -1,0 +1,11 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "_id": {"type": "string"},
+            "name_fr": {"type": "string"}
+        },
+        "requires": ["_id","name_fr"]
+    }
+}

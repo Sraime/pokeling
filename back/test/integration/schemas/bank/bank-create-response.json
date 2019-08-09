@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "properties": {
+        "_id": {"type": "string"},
+        "name_fr": {"type": "string"},
+        "userPseudo": {"type": "string"},
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties" : {
+                    "name_fr": {"type": "string"},
+                    "type": {"type": "string"}
+                },
+                "requires": ["name_fr","type"]
+            }
+        }
+    },
+    "requires": ["_id","name_fr","userPseudo","tags"]
+}

@@ -4,7 +4,6 @@
         "type": "object",
         "properties": {
             "_id": {"type": "string"},
-            "name_en": {"type": "string"},
             "name_fr": {"type": "string"},
             "userPseudo": {"type": "string"},
             "tags": {
@@ -12,14 +11,13 @@
                 "items": {
                     "type": "object",
                     "properties" : {
-                        "name_en": {"type": "string"},
                         "name_fr": {"type": "string"},
                         "type": {"type": "string"}
                     },
-                    "requires": ["name_fr","name_en","type"]
+                    "requires": ["name_fr","type"]
                 }
             }
         },
-        "requires": ["_id","name_fr","name_en","userPseudo","tags"]
+        "requires": ["_id","name_fr","userPseudo","tags"]
     }
 }

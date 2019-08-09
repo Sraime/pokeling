@@ -1,6 +1,9 @@
 const PokemonModel = require('../../app/models/pokemon.model.js')
 const config = require('../../config');
 const request = require('request-promise-native');
+const Validator = require('jsonschema').Validator;
+const PokemonListSchema = require('./schemas/pokemon/pokemon-list-response.json')
+
 const BASE_URL = 'http://localhost:'+config.app.port;
 
 describe('/pokemon', () => {
@@ -29,6 +32,8 @@ describe('/pokemon', () => {
         method: 'GET'
     };
 
+    const validator = new Validator();
+
     beforeAll(async() => {
         await PokemonModel.insertMany(existingPokemons);
     });
@@ -44,6 +49,7 @@ describe('/pokemon', () => {
     it('it should return a list of 15 pokemons', async() => {
         let r = await request(reqOptions);
         expect(r.length).toEqual(15);
+        expect(validator.validate(r,PokemonListSchema).errors.length).toEqual(0);
     })
 
     it('it should return a list of 5 pokemons starting by "C" when the search word is "c"', async() => {

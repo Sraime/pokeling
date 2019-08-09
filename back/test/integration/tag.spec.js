@@ -1,6 +1,8 @@
 const TagModel = require('../../app/models/tag.model');
 const config = require('../../config');
 const request = require('request-promise-native');
+const Validator = require('jsonschema').Validator;
+const TagListSchema = require('./schemas/tag/tag-list-response.json');
 
 describe('GET /tag', () => {
     
@@ -24,6 +26,7 @@ describe('GET /tag', () => {
     ];
     const BASE_URL = 'http://localhost:'+config.app.port;
     let reqOptions;
+    const validator = new Validator();
 
     beforeAll(async() => {
         await TagModel.insertMany(existingTags);
@@ -44,6 +47,7 @@ describe('GET /tag', () => {
     it('should return a list of 15 tags', async() => {
         let r = await request(reqOptions);
         expect(r.length).toEqual(15);
+        expect(validator.validate(r,TagListSchema).errors.length).toEqual(0);
     });
 
     it('should return a list of 3 tags when the starting with "M" when the searching word is "m"', async() => {
