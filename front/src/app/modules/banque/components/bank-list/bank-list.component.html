@@ -14,7 +14,7 @@
     </ng-container>
     <ng-container matColumnDef="ability">
         <th mat-header-cell *matHeaderCellDef>Talent(s)</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell class="col-type-ability" *matCellDef="let element">
             <ng-container 
                 [ngTemplateOutlet]="tagValue" 
                 [ngTemplateOutletContext]="{tags:element.ability, inlineTags:element.abilityInlineTags}">
@@ -23,7 +23,7 @@
     </ng-container>
     <ng-container matColumnDef="nature">
         <th mat-header-cell *matHeaderCellDef>Nature(s)</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell class="col-type-nature" *matCellDef="let element">
             <ng-container 
                 [ngTemplateOutlet]="tagValue" 
                 [ngTemplateOutletContext]="{tags:element.nature, inlineTags:element.natureInlineTags}">
@@ -32,7 +32,7 @@
     </ng-container>
     <ng-container matColumnDef="move">
         <th mat-header-cell *matHeaderCellDef>Attaque(s)</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell class="col-type-move" *matCellDef="let element">
             <ng-container 
                 [ngTemplateOutlet]="tagValue" 
                 [ngTemplateOutletContext]="{tags:element.move, inlineTags:element.moveInlineTags}">

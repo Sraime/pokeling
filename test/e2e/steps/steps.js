@@ -134,3 +134,25 @@ Then('la liste de mes pokemons est affichée', () => {
 Then('la liste de mes pokemons contient l\'espèce {string}', (espece) => {
   I.see(espece, {css: '#bank-table'});
 });
+
+Then('la colone {string} est en position {string} de la banque', (columnName, position) => {
+  I.see(columnName, '#bank-table th:nth-child('+position+')');
+});
+
+Given('le pokemon {string} de {string} à le tag {string} de type {string}', async(pokeName, userPseudo, tagName, tagType) => {
+  const nt = {name_fr: tagName, type: tagType};
+  await OwnedPokemonModel.updateMany({userPseudo: userPseudo, name_fr: pokeName}, { $push: {tags: nt}})
+})
+
+Then('le pokemon en position {string} affiche {string} pour la colone du type {string}', (position, tagName, tagType) => {
+  I.see(tagName, '#bank-table tbody tr:nth-child('+position+') td.col-type-'+tagType);
+})
+
+Then('je survole le texte de la colone du type {string} pour le pokemon en position {string}', (tagType, position) => {
+  I.moveCursorTo('#bank-table tbody tr:nth-child('+position+') td.col-type-'+tagType+' .tag-value');
+  I.wait(5);
+})
+
+Then('un message affiche {string}', (msg) => {
+  I.see(msg)
+})

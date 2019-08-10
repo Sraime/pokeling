@@ -5,7 +5,7 @@
     <mat-card-content>
         <form (ngSubmit)="onSubmit()" [formGroup]="form" id="register-form" >
             <mat-form-field class="form-field" id="register-pseudo-field">
-                <input matInput placeholder="Pseudo" type="text" name="pseudo" id="register-pseudo" formControlName="pseudo" required/>
+                <input matInput placeholder="Pseudo" type="text" name="pseudo" id="register-pseudo" formControlName="pseudo" [errorStateMatcher]="matcher" required/>
                 <mat-error class="field-error" *ngIf="form.get('pseudo').errors && !form.get('pseudo').errors.unique">
                     Le Pseudo ne peut être composé que de lettres et des chiffres (3 à 15 caractères)
                 </mat-error>
@@ -25,7 +25,7 @@
             </mat-form-field>
             
             <mat-form-field class="form-field" id="register-password-field">
-                <input matInput placeholder="Mot de passe" type="password" name="password" id="register-password" formControlName="password" required/>
+                <input matInput placeholder="Mot de passe" type="password" name="password" id="register-password" formControlName="password" [errorStateMatcher]="matcher" required/>
                 <mat-error class="field-error">
                     Le mot de passe doit être composé de 8 à 30 caractères
                 </mat-error>
