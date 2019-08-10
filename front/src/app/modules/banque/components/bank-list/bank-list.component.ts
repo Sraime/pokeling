@@ -16,7 +16,16 @@ export class BankListComponent implements OnInit {
 
   ngOnInit() {
     this.bankService.getOwnedPokemons().subscribe((data) => {
-      this.pokemons = data;
+      this.pokemons = data.map((e) => {
+        e.tags.forEach((t) => {
+          e[t.type+''] ? e[t.type+''].push(t) : e[t.type+''] = [t];
+          if (!e[t.type+'InlineTags']) 
+            e[t.type+'InlineTags'] = t.name_fr
+          else 
+            e[t.type+'InlineTags'] += ' '+t.name_fr;
+        })
+        return e;
+      });
     })
   }
 

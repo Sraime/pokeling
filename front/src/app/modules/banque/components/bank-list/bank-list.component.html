@@ -1,8 +1,44 @@
+<ng-template #tagValue let-tags='tags' let-inlineTags='inlineTags'>
+    <div class='tag-value' *ngIf="!tags">-</div>
+    <mat-chip-list *ngIf="tags"> 
+        <mat-chip class='tag-value' *ngIf="tags.length === 1">{{tags[0].name_fr}}</mat-chip>
+        <mat-chip class='tag-value' *ngIf="tags.length > 1" matTooltip="{{inlineTags}}">{{tags.length}}</mat-chip>
+    </mat-chip-list>
+        
+</ng-template>
+
 <table mat-table [dataSource]="pokemons" id="bank-table">
     <ng-container matColumnDef="espece">
         <th mat-header-cell *matHeaderCellDef>Espèce</th>
         <td mat-cell *matCellDef="let element"> {{element.name_fr}} </td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['espece']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['espece'];"></tr>
+    <ng-container matColumnDef="ability">
+        <th mat-header-cell *matHeaderCellDef>Talent(s)</th>
+        <td mat-cell *matCellDef="let element">
+            <ng-container 
+                [ngTemplateOutlet]="tagValue" 
+                [ngTemplateOutletContext]="{tags:element.ability, inlineTags:element.abilityInlineTags}">
+            </ng-container>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="nature">
+        <th mat-header-cell *matHeaderCellDef>Nature(s)</th>
+        <td mat-cell *matCellDef="let element">
+            <ng-container 
+                [ngTemplateOutlet]="tagValue" 
+                [ngTemplateOutletContext]="{tags:element.nature, inlineTags:element.natureInlineTags}">
+            </ng-container>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="move">
+        <th mat-header-cell *matHeaderCellDef>Attaque(s)</th>
+        <td mat-cell *matCellDef="let element">
+            <ng-container 
+                [ngTemplateOutlet]="tagValue" 
+                [ngTemplateOutletContext]="{tags:element.move, inlineTags:element.moveInlineTags}">
+            </ng-container>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['espece','ability','nature','move']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['espece','ability','nature','move'];"></tr>
 </table>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BanqueRoutingModule } from './banque-routing.module';
 import { BankListComponent } from './components/bank-list/bank-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule } from '@angular/material';
+import { MatTableModule, MatTooltipModule, MatChipsModule } from '@angular/material';
 import { AuthInterceptor } from '../auth/auth-interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -15,6 +15,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     BanqueRoutingModule,
     BrowserAnimationsModule,
     MatTableModule,
+    MatTooltipModule,
+    MatChipsModule
   ],
   providers: [
     {
