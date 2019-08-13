@@ -7,9 +7,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule, MatTooltipModule, MatChipsModule } from '@angular/material';
 import { AuthInterceptor } from '../auth/auth-interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BankFormComponent } from './components/bank-form/bank-form.component';
 
 @NgModule({
-  declarations: [BankListComponent],
+  declarations: [BankListComponent, BankFormComponent],
   imports: [
     CommonModule,
     BanqueRoutingModule,

@@ -14,9 +14,10 @@ describe('/bank', () => {
 
     let authToken;
     const validator = new Validator();
+    let existingUser;
         
     beforeAll(async() => {
-        const existingUser = {
+        existingUser = {
             pseudo: 'admin', 
             email: 'admin.admin@admin.com', 
             password: 'admin'
@@ -163,7 +164,7 @@ describe('/bank', () => {
                 reqOptions.headers = {"Authorization":"Bearer " + authToken}
             });
 
-            it('should return an error 400 when the pokemon_id is not given', async () => {
+            it('should return an error 400 when the pokemonId is not given', async () => {
                 reqOptions.body = {};
                 try{
                     await request(reqOptions);
@@ -172,8 +173,8 @@ describe('/bank', () => {
                 }
             });
             
-            it('should return an error 400 when the pokemon_id is not exist', async () => {
-                reqOptions.body = {pokemon: '123456789'};
+            it('should return an error 400 when the pokemonId not exist', async () => {
+                reqOptions.body = {pokemonId: '123456789'};
                 try{
                     await request(reqOptions);
                 } catch(e) {
@@ -181,8 +182,8 @@ describe('/bank', () => {
                 }
             });
             
-            it('should return an error 400 when the list of tags contain a not existing tag_id', async () => {
-                reqOptions.body = {pokemon: existingPoke.id+'', tag: ['123456789']};
+            it('should return an error 400 when the list of tags contain a not existing tagsIds', async () => {
+                reqOptions.body = {pokemonId: existingPoke.id+'', tagsIds: ['123456789']};
                 try{
                     await request(reqOptions);
                 } catch(e) {
@@ -191,12 +192,13 @@ describe('/bank', () => {
             });
             
             it('should return the created owned pokemon when it succeed', async () => {
-                reqOptions.body = {pokemon: existingPoke.id+'', tag_ids: [existingTag.id+'']};
+                reqOptions.body = {pokemonId: existingPoke.id+'', tagsIds: [existingTag.id+'']};
                 let r = await request(reqOptions);
                 expect(validator.validate(r,bankCreateResponseSchema).errors.length).toEqual(0);
                 expect(r.name_fr).toEqual(existingPoke.name_fr);
                 expect(r.userPseudo).toEqual(existingUser.pseudo);
                 expect(r.tags).toEqual([{name_fr: existingTag.name_fr, type: existingTag.type}]);
+                await OwnedPokemonModel.findByIdAndDelete(r._id);
             });
         });
     });

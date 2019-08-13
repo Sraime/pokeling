@@ -11,6 +11,7 @@ router.post('/auth/signin', authController.singin);
 router.post('/auth/signup', authController.signup);
 
 router.get('/bank', authService.isAuthenticated, bankController.getOwnedPokemons);
+router.post('/bank', authService.isAuthenticated, bankController.addOwnedPokemon);
 
 router.get('/pokemon', pokemonController.getPokemons);
 

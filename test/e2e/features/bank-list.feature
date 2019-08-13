@@ -32,8 +32,8 @@ Feature: consultation de la banque
             Examples:
             | tagType   |
             | nature    |
-            | ability    | 
-            | move   |
+            | ability   | 
+            | move      |
 
     Scenario Outline: affichage du nombre de tag quand un pokemon en contient plusieurs du même type
         Given l'utilisateur "Test" avec l'email "test.test@test.fr" et le mdp "AZERTY01" est enregistré
@@ -47,8 +47,8 @@ Feature: consultation de la banque
             Examples:
             | tagType   |
             | nature    |
-            | ability    | 
-            | move   |
+            | ability   | 
+            | move      |
 
     Scenario Outline: affichage des tags d'un type au survole du nombre
         Given l'utilisateur "Test" avec l'email "test.test@test.fr" et le mdp "AZERTY01" est enregistré
@@ -63,5 +63,5 @@ Feature: consultation de la banque
             Examples:
             | tagType   |
             | nature    |
-            | ability    | 
-            | move   |
+            | ability   | 
+            | move      |
