@@ -1,4 +1,4 @@
-@bank
+@bank @bankCreate
 Feature: ajout d'un pokemon à la ma banque
     En tant que utilisateur connecté
     Je veux ajouter un pokemon à ma banque
@@ -13,34 +13,34 @@ Feature: ajout d'un pokemon à la ma banque
         And le pokemon "Pitchu" existe
         And je suis sur l'écran de la ma banque
         When je renseigne "P" dans le champ "pokemon"
-        Then le champ "pokemon" me propose l'autocompletion par "Pikachu"
-        And le champ "pokemon" me propose l'autocompletion par "Pitchu"
+        Then l'autocompletion me propose "Pikachu"
+        And l'autocompletion me propose "Pitchu"
     
     Scenario: réinitialisation du champ pokemon à la perte du focus
         Given je suis sur l'écran de la ma banque
         And je renseigne "P" dans le champ "pokemon"
         When je renseigne "P" dans le champ "tags"
-        And la valeur du champ "pokemon" du formulaire d'ajout en banque est ""
+        And la valeur du champ "pokemon" est ""
 
     Scenario: autocompletion sur la sélection d'un tags
         Given le tag "Tag1" du type "nature" existe 
         And le tag "Tag2" du type "nature" existe 
         And je suis sur l'écran de la ma banque
-        When je renseigne "P" dans le champ "tags"
-        Then le champ "tags" me propose l'autocompletion par "Pikachu"
-        And le champ "tags" me propose l'autocompletion par "Pitchu"
+        When je renseigne "T" dans le champ "tags"
+        Then l'autocompletion me propose "Tag1"
+        And l'autocompletion me propose "Tag2"
 
     Scenario: réinitialisation du champ tags à la perte du focus
         Given je suis sur l'écran de la ma banque
         When je renseigne "P" dans le champ "tags"
         And je renseigne "P" dans le champ "pokemon"
-        And la valeur du champ "pokemon" du formulaire d'ajout en banque est ""
+        And la valeur du champ "pokemon" est ""
 
     Scenario: création d'un pokemon avec un tag nature
         Given le pokemon "Poke1" existe
         And le tag "Tag1" du type "nature" existe 
         And je suis sur l'écran de la ma banque
-        When je selectionne la valeur "Poke1" pour le champ "pokemon"
-        And je selectionne la valeur "Tag1" pour le champ "tags"
+        When je selectionne la valeur d'autocompletion "Poke1" pour le champ "pokemon"
+        And je selectionne la valeur d'autocompletion "Tag1" pour le champ "tags"
         And Je valide l'ajout du pokemon dans ma banque
         Then la liste de mes pokemons contient l'espèce "Poke1"

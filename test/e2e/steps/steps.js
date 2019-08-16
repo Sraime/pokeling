@@ -2,28 +2,29 @@ const I = actor();
 const mongoose = require('mongoose');
 const UserModel = require('../models/user.model');
 const OwnedPokemonModel = require('../models/owned-pokemon');
+const PokemonModel = require('../models/pokemon');
+const TagModel = require('../models/tag');
 const config = require('../../config');
 
 Before(async() => {
+  var mongoDB = 'mongodb://'+config.mongodb.host+':'+config.mongodb.port+'/'+config.mongodb.db;
   if(mongoose.connection.readyState === 0) {
-    var mongoDB = 'mongodb://'+config.mongodb.host+':'+config.mongodb.port+'/'+config.mongodb.db;
-    mongoose.connect(mongoDB, { useNewUrlParser: true })
-        .then(()=> {})
-        .catch((e)=> console.error("DB error !", e));
+    await mongoose.connect(mongoDB, { useNewUrlParser: true })
   }
-  await cleanUpDb();
 });
 
 const cleanUpDb = async() => {
   await UserModel.deleteMany({});
   await OwnedPokemonModel.deleteMany({});
+  await PokemonModel.deleteMany({});
+  await TagModel.deleteMany({});
 }
 
 After(async() => {
   await cleanUpDb();
   mongoose.connection.close()
-        .then(()=> {})
-        .catch((e)=> console.error("DB closing error !", e));
+  .then(()=> {})
+  .catch((e)=> console.error("DB closing error !", e));
 });
 
 Fail(async(test, err) => {
@@ -150,9 +151,40 @@ Then('le pokemon en position {string} affiche {string} pour la colone du type {s
 
 Then('je survole le texte de la colone du type {string} pour le pokemon en position {string}', (tagType, position) => {
   I.moveCursorTo('#bank-table tbody tr:nth-child('+position+') td.col-type-'+tagType+' .tag-value');
-  I.wait(5);
 })
 
 Then('un message affiche {string}', (msg) => {
   I.see(msg)
 })
+Given('le pokemon {string} existe', async(name) => {
+  const np = new PokemonModel({name_fr: name});
+  await np.save();
+});
+
+When('je renseigne {string} dans le champ {string}', (value, field) => {
+  I.fillField(field, value);
+});
+
+Then('l\'autocompletion me propose {string}', (suggestion) => {
+  I.wait(1);
+  I.see(suggestion,'.mat-autocomplete-panel')
+});
+
+When('la valeur du champ {string} est {string}', (field, value) => {
+  I.seeInField(field, value);
+});
+
+Given('le tag {string} du type {string} existe', async(name, type) => {
+  const nt = new TagModel({name_fr: name, type: type});
+  await nt.save();
+});
+
+When('je selectionne la valeur d\'autocompletion {string} pour le champ {string}', (value, field) => {
+  I.fillField(field, value);
+  I.wait(1);
+  I.click(value, '.mat-autocomplete-panel')
+});
+
+When('Je valide l\'ajout du pokemon dans ma banque', () => {
+  I.click('#bank-add-submit')
+});
