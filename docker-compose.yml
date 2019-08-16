@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - ./data/db:/data/db
+    ports: 
+      - 27018:27017
+    environment:
+      MONGO_INITDB_DATABASE: pokelink
+
+  node:
+    build: ./back
+    restart: always
+    links:
+      - mongo
+    volumes:
+      - ./back:/pokelink_back
+    ports:
+      - 3000:3000
+    environment:
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_NAME: pokelink
+      NODE_ENV: prod
+      AUTH_SECRET: randomsecretpassword
+
+  httpd:
+    image: httpd
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./front/dist/ngCliWebpackSample:/usr/local/apache2/htdocs/
