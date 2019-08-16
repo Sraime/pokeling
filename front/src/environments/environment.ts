@@ -11,6 +11,12 @@ export const environment = {
     },
     bank: {
       url: "http://localhost:3000/bank"
+    },
+    pokemon: {
+      url: "http://localhost:3000/pokemon"
+    },
+    tag: {
+      url: "http://localhost:3000/tag"
     }
   }
 };

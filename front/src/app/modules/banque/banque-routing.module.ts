@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BankListComponent } from './components/bank-list/bank-list.component';
 import { LoginActivate } from '../auth/LoginActivateGuard';
+import { BankPageComponent } from './components/bank-page/bank-page.component';
+
 
 const routes: Routes = [
-  { path: 'bank', component: BankListComponent, canActivate: [LoginActivate]}
+  { path: 'bank', component: BankPageComponent, canActivate: [LoginActivate]}
 ];
 
 @NgModule({

@@ -1,20 +1,45 @@
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { OwnedPokemon } from '../../interfaces/owned-response';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
+import { HttpOptionsBuilder } from '../../../auth/libs/HttpOptionsBuilder/HttpOptionsBuilder';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BankService {
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private httpob: HttpOptionsBuilder) {}
 
     url = environment.api.bank.url;
 
-    getOwnedPokemons() : Observable<Array<OwnedPokemon>> {
-        return this.http.get<Array<OwnedPokemon>>(this.url);
+    subOwnedPokemons: Subject<Array<OwnedPokemon>> = new Subject<Array<OwnedPokemon>>();
+    
+    cachedOwnedPkemons: Array<OwnedPokemon> = [];
+
+    getObsevableOwnedPokemons() : Subject<Array<OwnedPokemon>> {
+        return this.subOwnedPokemons;
+    }
+
+    updateList(): void{
+        this.http.get<Array<OwnedPokemon>>(this.url).subscribe( (ops) => {
+            this.cachedOwnedPkemons = ops;
+            this.dispatchUpdate();
+        })
+    }
+
+    addOwnedPokemon(idpoke, tagsIds) {
+        let h = this.httpob.getHeader();
+        this.http.post<OwnedPokemon>(this.url, {pokemonId: idpoke, tagsIds: tagsIds}, {headers: h})
+            .subscribe((nop) => {
+                this.cachedOwnedPkemons.push(nop);
+                this.dispatchUpdate();
+            });
+    }
+
+    dispatchUpdate() {
+        this.subOwnedPokemons.next(JSON.parse(JSON.stringify(this.cachedOwnedPkemons)));
     }
 
 }

@@ -1,6 +1,6 @@
 export interface OwnedPokemon{
+    _id: String,
     name_fr: String,
-    name_en: String,
     userPseudo: String,
     tags: Array<Tags>
 }

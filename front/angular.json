@@ -18,10 +18,9 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-            ],
+            "assets": [],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -87,11 +86,10 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [],
-            "assets": [
-            ]
+            "assets": []
           }
         },
         "lint": {
@@ -137,5 +135,10 @@
       }
     }
   },
-  "defaultProject": "ngCliWebpackSample"
+  "defaultProject": "ngCliWebpackSample",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

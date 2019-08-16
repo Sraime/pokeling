@@ -1,15 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar id="navbar">  
+<mat-toolbar id="navbar" color="primary">  
     <mat-toolbar-row>
         <span>PokeLink</span>
         <span class="nav-spacer"></span>
         <span *ngIf="!isLoggedIn" class="right-nav">
-            <button routerLink="/auth/register" routerLinkActive="active" mat-stroked-button>Inscription</button>
-            <button routerLink="/auth/login" routerLinkActive="active" mat-stroked-button>Connexion</button>
+            <button mat-raised-button color="accent" routerLink="/auth/register" routerLinkActive="active" mat-stroked-button>Inscription</button>
+            <button mat-raised-button routerLink="/auth/login" routerLinkActive="active" mat-stroked-button>Connexion</button>
         </span>
         <span *ngIf="isLoggedIn" class="right-nav">
             <span id="pseudo-user-connected">{{pseudo}}</span>
-            <button mat-stroked-button (click)="singout()">Déconnexion</button>
+            <button mat-flat-button color="warn" mat-stroked-button (click)="singout()">Déconnexion</button>
         </span>
     </mat-toolbar-row>
 </mat-toolbar>

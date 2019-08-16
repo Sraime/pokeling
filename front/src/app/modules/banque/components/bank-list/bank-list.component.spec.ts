@@ -12,6 +12,7 @@ describe('BankListComponent', () => {
   let fixture: ComponentFixture<BankListComponent>;
   let bankService : BankService;
   let spyGetOwned = jest.fn().mockReturnValue(of())
+  let spyUpdateListOwned = jest.fn();
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -19,7 +20,10 @@ describe('BankListComponent', () => {
       providers: [ 
         {
           provide: BankService,
-          useValue: {getOwnedPokemons: spyGetOwned},
+          useValue: {
+            getObsevableOwnedPokemons: spyGetOwned,
+            updateList: spyUpdateListOwned
+          },
         },
         {
           provide: HAMMER_LOADER,
@@ -61,10 +65,15 @@ describe('BankListComponent', () => {
       spyGetOwned.mockReturnValue(of(owned))
     });
 
-    it('should init pokemons with the bank service', () => {
+    it('should subscribe to the bank service', () => {
       component.ngOnInit();
-      expect(bankService.getOwnedPokemons).toHaveBeenCalled();
+      expect(bankService.getObsevableOwnedPokemons).toHaveBeenCalled();
       expect(component.pokemons.length).toEqual(owned.length);
+    });
+    
+    it('should request an update of owned pokemons list', () => {
+      component.ngOnInit();
+      expect(spyUpdateListOwned).toHaveBeenCalled();
     });
 
     it('should have 3 row with Pitchu', async(() => {

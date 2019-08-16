@@ -1,1 +1,46 @@
-<p>bank-form works!</p>
+<form [formGroup]="form" id="bank-add-form" (ngSubmit)="onSubmit()">
+    <mat-form-field id="bank-pokemon-field" class="inline-form-field">
+        <input type='text' 
+            id="bank-pokemon-input" 
+            matInput
+            placeholder="Espèce"
+            formControlName="pokemon"
+            (keyup)="subPokemonField.next($event.target.value)"
+            (blur)="onBlurPokemon()"
+            [matAutocomplete]="autoPoke"/>
+        <mat-autocomplete #autoPoke>
+            <mat-option *ngFor="let option of pokemonOptions" [value]="option.name_fr">
+                {{option.name_fr}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field id="bank-tags-field" class="inline-form-field chip-list-field">
+        <mat-chip-list #tagList>
+            <mat-chip *ngFor="let tag of selectedTags" class="selected-chip"
+                [removable]="true"
+                (removed)="removeTag(tag)">
+                <div class="chip-value">{{tag.name_fr}}</div>
+                <mat-icon class="chip-remove-icon" matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input type="text"
+                #tagsInput
+                id="bank-tags-input"
+                placeholder="Nature / Talent / Attaques / ..."
+                matInput
+                formControlName="tags"
+                (keyup)="subTagField.next($event.target.value)"
+                (blur)="onBlurTags()"
+                [matChipInputFor]="tagList"
+                [matAutocomplete]="autoTags"/>
+        </mat-chip-list>
+        <mat-autocomplete #autoTags (optionSelected)="selectTag($event.option.viewValue)">
+            <mat-option *ngFor="let option of tagsOptions" [value]="option.name_fr">
+                {{option.name_fr}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <div id="bank-submit-btn" class="inline-form-field">
+        <button mat-raised-button color="primary" type="submit" id="bank-add-submit" [disabled]="!form.valid"><mat-icon>add</mat-icon></button>
+    </div>
+</form>

@@ -47,6 +47,7 @@
     "jest-preset-angular": "^7.1.1",
     "json-server": "^0.14.2",
     "ng-bullet": "^1.0.3",
+    "rxjs-marbles": "^5.0.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.4.5"

@@ -1,0 +1,23 @@
+#bank-add-form {
+    display: flex;
+    align-items: center;
+}
+
+#bank-pokemon-field {
+    flex-grow: 2;
+}
+
+#bank-tags-field {
+    flex-grow: 10;
+}
+
+#bank-sumbmit-btn {
+    flex-grow: 1;
+}
+
+.chip-list-field .selected-chip {
+    margin-top: 0;
+    min-height: 25px;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
