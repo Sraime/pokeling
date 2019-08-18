@@ -6,7 +6,7 @@
     "start": "npm run start:dev",
     "start:dev": "ng serve",
     "start:test": "ng serve --configuration=test --port 4201",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test:unit": "ng test",
     "test:unit:watch": "ng test --watch=true",
     "lint": "ng lint",
