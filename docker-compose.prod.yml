@@ -4,7 +4,8 @@ services:
   mongo:
     image: mongo
     volumes:
-      - ./data/db:/data/db
+      - /data/db:/data/db
+      - /data/dumps:/data/dumps
     environment:
       MONGO_INITDB_DATABASE: pokelink
 
