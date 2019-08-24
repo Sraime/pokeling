@@ -11,7 +11,7 @@
     },
     "Puppeteer": {
       "url": "http://localhost",
-      "show": true, 
+      "show": false, 
       "windowSize" : "1024x768"
     }
   },

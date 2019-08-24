@@ -16,7 +16,7 @@ Feature: connexion
         And je saisis le mdp "Azerty01"
         And je valide la connexion
         Then je suis connecté en tant que "Toto"
-        And je suis sur ma banque
+        And je suis redirigé sur ma banque
 
     Scenario Outline: erreur si l'email ou le mot de passe est incorrect
         Given l'utilisateur "<pseudo>" avec l'email "<email>" et le mdp "<mdp>" est enregistré

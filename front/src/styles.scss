@@ -5,3 +5,16 @@
     display: inline-block;
     padding: 20px;
 }
+
+.dialog-header{
+    display: flex;
+}
+
+.flex-spacer {
+    flex: 1 1 auto;
+}
+
+body {
+    font-family: Roboto, Arial, sans-serif;
+    margin: 0;
+}

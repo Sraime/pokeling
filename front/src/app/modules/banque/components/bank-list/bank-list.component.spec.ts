@@ -5,7 +5,8 @@ import { By, HAMMER_LOADER } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
 import { BankService } from '../../services/bank/bank.service';
 import { of } from 'rxjs';
-import { MatTableModule, MatChipsModule, MatTooltipModule } from '@angular/material';
+import { MatTableModule, MatChipsModule, MatTooltipModule, MatDialog } from '@angular/material';
+import { BankDetailComponent } from '../bank-detail/bank-detail.component';
 
 describe('BankListComponent', () => {
   let component: BankListComponent;
@@ -13,6 +14,7 @@ describe('BankListComponent', () => {
   let bankService : BankService;
   let spyGetOwned = jest.fn().mockReturnValue(of())
   let spyUpdateListOwned = jest.fn();
+  let spyOpenDetailDialog = jest.fn();
 
   configureTestSuite(() => {
     TestBed.configureTestingModule({
@@ -28,6 +30,10 @@ describe('BankListComponent', () => {
         {
           provide: HAMMER_LOADER,
           useValue: () => new Promise(() => {})
+        },
+        {
+          provide: MatDialog,
+          useValue: {open: spyOpenDetailDialog}
         }
       ],
       imports: [MatTableModule, MatChipsModule, MatTooltipModule]
@@ -89,6 +95,17 @@ describe('BankListComponent', () => {
         fixture.detectChanges();
         const col = fixture.debugElement.nativeElement.querySelector('#bank-table tbody tr:first-child td:first-child');
         expect(col.textContent.trim()).toEqual("Pitchu");
+      });
+    }));
+
+    it('should open the detail dialog after clicking on a row', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const row = fixture.debugElement.nativeElement.querySelector('#bank-table tbody tr:first-child');
+        row.click();
+        expect(spyOpenDetailDialog).toHaveBeenCalledWith(BankDetailComponent, { 
+          width: expect.any(String), 
+          data: owned[0]});
       });
     }));
     

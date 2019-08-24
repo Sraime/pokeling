@@ -7,6 +7,5 @@ export interface OwnedPokemon{
 
 interface Tags {
     name_fr: String,
-    name_en: String,
     type: String
 }

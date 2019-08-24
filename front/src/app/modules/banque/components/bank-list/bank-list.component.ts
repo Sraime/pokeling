@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BankService } from '../../services/bank/bank.service';
 import { OwnedPokemon } from '../../interfaces/owned-response';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { BankDetailComponent } from '../bank-detail/bank-detail.component';
 
 @Component({
   selector: 'app-bank-list',
@@ -14,7 +16,7 @@ export class BankListComponent implements OnInit, OnDestroy{
 
   listSubscriber: Subscription;
 
-  constructor(private bankService: BankService) { }
+  constructor(private bankService: BankService, private dialogDetail: MatDialog) { }
 
   ngOnInit() {
     this.listSubscriber = this.bankService.getObsevableOwnedPokemons().subscribe((data) => {
@@ -34,6 +36,10 @@ export class BankListComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     this.listSubscriber.unsubscribe();
+  }
+
+  selectRow(rowData){
+    this.dialogDetail.open(BankDetailComponent, {width: '50%', data: rowData})
   }
 
 }

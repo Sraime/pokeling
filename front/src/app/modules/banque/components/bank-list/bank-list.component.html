@@ -40,5 +40,5 @@
         </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="['espece','ability','nature','move']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['espece','ability','nature','move'];"></tr>
+    <tr mat-row (click)="selectRow(row)" id="owned-poke-{{row._id}}" *matRowDef="let row; columns: ['espece','ability','nature','move'];"></tr>
 </table>

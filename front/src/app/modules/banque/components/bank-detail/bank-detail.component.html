@@ -1,0 +1,43 @@
+<div mat-dialog-header class='dialog-header'>
+    <h2 mat-dialog-title id="bank-detail-title">{{title}}</h2>
+    <span class="flex-spacer"></span>
+    <div class="dialog-header-options">
+        <button mat-button id="bank-detail-close" (click)="closeDialog()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>
+<div mat-dialog-content>
+    <div id="bank-detail-nature">
+        <h3 class="section-title">Nature(s)</h3>
+        <mat-chip-list>
+            <ng-container *ngFor="let tagName of natureTags">
+                <mat-chip>{{tagName}}</mat-chip>
+            </ng-container>
+        </mat-chip-list>
+    </div>
+    <div id="bank-detail-ability">
+        <h3 class="section-title">Talent(s)</h3>
+        <mat-chip-list>
+            <ng-container *ngFor="let tagName of abilityTags">
+                <mat-chip>{{tagName}}</mat-chip>
+            </ng-container>
+        </mat-chip-list>
+    </div>
+    <div id="bank-detail-move">
+        <h3 class="section-title">Attaque(s)</h3>
+        <mat-chip-list>
+            <ng-container *ngFor="let tagName of moveTags">
+                <mat-chip>{{tagName}}</mat-chip>
+            </ng-container>
+        </mat-chip-list>
+    </div>
+    <div id="bank-detail-other">
+        <h3 class="section-title">Autre(s)</h3>
+        <mat-chip-list>
+            <ng-container *ngFor="let tagName of otherTags">
+                <mat-chip>{{tagName}}</mat-chip>
+            </ng-container>
+        </mat-chip-list>
+    </div>
+</div>

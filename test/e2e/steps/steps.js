@@ -5,6 +5,7 @@ const OwnedPokemonModel = require('../models/owned-pokemon');
 const PokemonModel = require('../models/pokemon');
 const TagModel = require('../models/tag');
 const config = require('../../config');
+var assert = require('assert');
 
 Before(async() => {
   var mongoDB = 'mongodb://'+config.mongodb.host+':'+config.mongodb.port+'/'+config.mongodb.db;
@@ -60,7 +61,7 @@ Then('je suis connecté en tant que {string}', (pseudo) => {
   I.seeTextEquals(pseudo, '#pseudo-user-connected');
 });
 
-Then('je suis sur ma banque', () => {
+Then('je suis redirigé sur ma banque', () => {
   I.seeCurrentUrlEquals(config.front.url+'/bank');
 });
 
@@ -124,7 +125,11 @@ Given('l\'utilisateur {string} possède le pokemon {string}', async(userPseudo, 
   await npoke.save()
 });
 
-When('je suis sur l\'écran de la ma banque', () => {
+When('je me rend sur l\'écran de ma banque', () => {
+  I.amOnPage(config.front.url+'/bank');
+});
+
+When('je suis sur l\'écran de ma banque', () => {
   I.amOnPage(config.front.url+'/bank');
 });
 
@@ -136,7 +141,7 @@ Then('la liste de mes pokemons contient l\'espèce {string}', (espece) => {
   I.see(espece, {css: '#bank-table'});
 });
 
-Then('la colone {string} est en position {string} de la banque', (columnName, position) => {
+Then('la colonne {string} est en position {string} de la banque', (columnName, position) => {
   I.see(columnName, '#bank-table th:nth-child('+position+')');
 });
 
@@ -187,4 +192,63 @@ When('je selectionne la valeur d\'autocompletion {string} pour le champ {string}
 
 When('Je valide l\'ajout du pokemon dans ma banque', () => {
   I.click('#bank-add-submit')
+});
+
+Given('l\'utilisateur {string} possède le pokemon {string} avec l\'identifiant {string}', async(userPseudo, pokeName, idPoke) => {
+  let npoke = new OwnedPokemonModel({_id: idPoke, userPseudo: userPseudo, name_fr: pokeName});
+  await npoke.save()
+});
+
+When('je clique sur la ligne du pokemon avec l\'identifiant {string}', (idPoke) => {
+  I.click("#owned-poke-"+idPoke+" td:first-child");
+});
+
+Then('le détail s\'affiche', () => {
+  I.seeElement('app-bank-detail');
+})
+
+Then('le détail du pokemon affiche {string} en titre', (title) => {
+  I.see(title, '.dialog-header');
+});
+
+Then('le détail contient {int} tags', (nb) => {
+  I.seeNumberOfElements('.mat-dialog-content mat-chip', nb);
+});
+
+Then('la section du détail identifiée par {string} à le titre {string}', (identifier, title) => {
+  I.see(title, '#bank-detail-'+identifier+' .section-title');
+});
+
+Then('la section du détail identifiée par {string} contient le tag {string}', (identifier, tagName) => {
+  I.see(tagName, '#bank-detail-'+identifier+' mat-chip-list');
+});
+
+Given('je suis sur détail du pokemon avec l\'identifiant {string}', (idPoke) => {
+  I.amOnPage(config.front.url+'/bank');
+  I.click("#owned-poke-"+idPoke+" td:first-child");
+});
+
+When('je clique sur l\'option de fermeture du détail', () => {
+  I.click('#bank-detail-close');
+});
+
+Then('le détail n\'est pas affiché', () => {
+  I.dontSeeElement('app-bank-detail');
+});
+
+When('je clique sur l\'option de suppression du pokemon dont l\'identifiant est {string}', (idPoke) => {
+  I.click("#owned-poke-"+idPoke+" td.bank-opts .bank-delete-opt");
+});
+
+Then('le pokemon avec l\'identifiant {string} n\'est pas affiché dans la banque', (idPoke) => {
+  I.dontSeeElement("#owned-poke-"+idPoke);
+});
+
+Then('le pokemon avec l\'identifiant {string} n\'existe pas', async(idPoke) => {
+  let p = await OwnedPokemonModel.find({_id: idPoke});
+  assert.equal(p.length, 0);
+});
+
+Then('le pokemon avec l\'identifiant {string} a un option de suppression', (idPoke) => {
+  I.seeElement("#owned-poke-"+idPoke+" td.bank-opts .bank-delete-opt");
 });
