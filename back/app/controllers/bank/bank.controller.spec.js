@@ -114,6 +114,32 @@ describe('bank.controller', () => {
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.send).toHaveBeenCalled();
         });
+    });
+
+    describe('deleteOwnedPokemon()', () => {
         
+        const spyDeletePokemon = jest.spyOn(bankService, 'deletePokemonById');
+
+        beforeEach(() => {
+            req.params = {};
+            spyDeletePokemon.mockClear();
+            spyDeletePokemon.mockReturnValue(null);
+        });
+
+        it('should return an empty body if the operation succed', async() => {
+            req.params = {id: 'validID'}
+            await bankController.deleteOwnedPokemon(req,res);
+            expect(spyDeletePokemon).toHaveBeenCalledWith('validID', req.user.pseudo);
+            expect(res.send).toHaveBeenCalledWith({});
+        });
+
+        it('should return a 400 status code when the sevice throw an error', async () => {
+            spyDeletePokemon.mockImplementation(() => {
+                throw new Error('invalid id');
+            });
+            await bankController.deleteOwnedPokemon(req, res);
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.send).toHaveBeenCalled();
+        });
     });
 });

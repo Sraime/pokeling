@@ -13,6 +13,10 @@ const BankService = {
             tags: tags
         });
         return nop.save();
+    }, 
+
+    deletePokemonById: async(id, userPseudo) => {
+        return OwnedPokemonModel.deleteOne({_id: id, userPseudo: userPseudo})
     }
 }
 

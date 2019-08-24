@@ -20,6 +20,16 @@ const BankController = {
         } catch(e) {}
         res.status(400);
         res.send();
+    },
+
+    deleteOwnedPokemon: async(req, res) => {
+        try{
+            await bankService.deletePokemonById(req.params.id, req.user.pseudo);
+        } catch(e) {
+            res.status(400);
+            return res.send();
+        }
+        res.send({});
     }
 }
 

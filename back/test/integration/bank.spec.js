@@ -202,4 +202,67 @@ describe('/bank', () => {
             });
         });
     });
+
+    describe('DELETE /bank/idPoke', () => {
+
+        let reqOptions = {
+            json: true,
+            method: 'DELETE',
+            uri: BASE_URI+'/bank'
+        }
+
+        it('should return a 401 status code when use is not logged in', async () => {
+            reqOptions.uri = BASE_URI+'/bank/11111'
+            try{
+                await request(reqOptions);
+            } catch(e) {
+                expect(e.statusCode).toEqual(401);
+            }
+        });
+
+        describe('logged in', () => {
+            
+            beforeEach(() => {
+                reqOptions.uri = BASE_URI+'/bank'
+                reqOptions.headers = {"Authorization":"Bearer " + authToken}
+            });
+
+            afterEach(async() => {
+                await OwnedPokemonModel.deleteMany({});
+            });
+
+            it('should delete the owned pokemon', async() => {
+                let existingPoke = new OwnedPokemonModel({name_fr: 'poke1', userPseudo: existingUser.pseudo})
+                existingPoke = await existingPoke.save();
+                reqOptions.uri += '/' + existingPoke._id;
+                await request(reqOptions);
+                let ownedPoke = await OwnedPokemonModel.findById({_id: existingPoke._id});
+                expect(ownedPoke).toBeFalsy();
+                
+            });
+            
+            it('should return a 400 status code when the pokemon exist but not owned', async() => {
+                let existingPoke = new OwnedPokemonModel({name_fr: 'poke2', userPseudo: 'anotherUser'})
+                existingPoke = await existingPoke.save();
+                reqOptions.uri += '/' + existingPoke._id;
+                try{
+                    await request(reqOptions);
+                } catch(e) {
+                    expect(e.statusCode).toEqual(400);
+                }
+                let ownedPoke = OwnedPokemonModel.findById({_id: existingPoke._id});
+                expect(ownedPoke).toBeTruthy();
+            });
+    
+            it('should return a 400 status code when the pokemon does not exist', async() => {
+                reqOptions.uri += '/111111';
+                try{
+                    await request(reqOptions);
+                } catch(e) {
+                    expect(e.statusCode).toEqual(400);
+                }
+            });
+        });
+
+    });
 });

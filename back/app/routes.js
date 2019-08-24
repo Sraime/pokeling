@@ -12,6 +12,7 @@ router.post('/auth/signup', authController.signup);
 
 router.get('/bank', authService.isAuthenticated, bankController.getOwnedPokemons);
 router.post('/bank', authService.isAuthenticated, bankController.addOwnedPokemon);
+router.delete('/bank/:id', authService.isAuthenticated, bankController.deleteOwnedPokemon);
 
 router.get('/pokemon', pokemonController.getPokemons);
 
