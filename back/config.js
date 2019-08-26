@@ -39,7 +39,7 @@ const prod = {
     },
     auth: {
         secret: process.env.AUTH_SECRET,
-        expiresIn: 60
+        expiresIn: 43200
     },
     mongodb: {
         host: process.env.DB_HOST,
