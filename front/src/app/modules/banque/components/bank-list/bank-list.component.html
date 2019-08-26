@@ -1,8 +1,8 @@
 <ng-template #tagValue let-tags='tags' let-inlineTags='inlineTags'>
     <div class='tag-value' *ngIf="!tags">-</div>
     <mat-chip-list *ngIf="tags"> 
-        <mat-chip class='tag-value' *ngIf="tags.length === 1">{{tags[0].name_fr}}</mat-chip>
-        <mat-chip class='tag-value' *ngIf="tags.length > 1" matTooltip="{{inlineTags}}">{{tags.length}}</mat-chip>
+        <mat-chip disabled class='tag-value' *ngIf="tags.length === 1">{{tags[0].name_fr}}</mat-chip>
+        <mat-chip disabled class='tag-value' *ngIf="tags.length > 1" matTooltip="{{inlineTags}}">{{tags.length}}</mat-chip>
     </mat-chip-list>
         
 </ng-template>
@@ -39,6 +39,12 @@
             </ng-container>
         </td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['espece','ability','nature','move']"></tr>
-    <tr mat-row (click)="selectRow(row)" id="owned-poke-{{row._id}}" *matRowDef="let row; columns: ['espece','ability','nature','move'];"></tr>
+    <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef>Options</th>
+        <td mat-cell class="col-type-options" *matCellDef="let element">
+            <button mat-button color="warn" (click)="deletePokemon(element._id, $event)" class="bank-list-del-btn"><mat-icon>close</mat-icon></button>
+        </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['espece','ability','nature','move', 'options']"></tr>
+    <tr mat-row (click)="selectRow(row)" id="owned-poke-{{row._id}}" *matRowDef="let row; columns: ['espece','ability','nature','move', 'options'];"></tr>
 </table>

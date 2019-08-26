@@ -42,4 +42,9 @@ export class BankListComponent implements OnInit, OnDestroy{
     this.dialogDetail.open(BankDetailComponent, {width: '50%', data: rowData})
   }
 
+  deletePokemon(idpoke, event) {
+    this.bankService.deleteOwnedPokemon(idpoke);
+    event.stopPropagation()
+  }
+
 }

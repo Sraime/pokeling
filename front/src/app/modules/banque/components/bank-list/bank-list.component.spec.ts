@@ -5,7 +5,7 @@ import { By, HAMMER_LOADER } from '@angular/platform-browser';
 import { configureTestSuite } from 'ng-bullet';
 import { BankService } from '../../services/bank/bank.service';
 import { of } from 'rxjs';
-import { MatTableModule, MatChipsModule, MatTooltipModule, MatDialog } from '@angular/material';
+import { MatTableModule, MatChipsModule, MatTooltipModule, MatDialog, MatButtonModule, MatIconModule } from '@angular/material';
 import { BankDetailComponent } from '../bank-detail/bank-detail.component';
 
 describe('BankListComponent', () => {
@@ -14,6 +14,7 @@ describe('BankListComponent', () => {
   let bankService : BankService;
   let spyGetOwned = jest.fn().mockReturnValue(of())
   let spyUpdateListOwned = jest.fn();
+  let spyDeletePokemon = jest.fn();
   let spyOpenDetailDialog = jest.fn();
 
   configureTestSuite(() => {
@@ -24,7 +25,8 @@ describe('BankListComponent', () => {
           provide: BankService,
           useValue: {
             getObsevableOwnedPokemons: spyGetOwned,
-            updateList: spyUpdateListOwned
+            updateList: spyUpdateListOwned,
+            deleteOwnedPokemon: spyDeletePokemon
           },
         },
         {
@@ -36,7 +38,7 @@ describe('BankListComponent', () => {
           useValue: {open: spyOpenDetailDialog}
         }
       ],
-      imports: [MatTableModule, MatChipsModule, MatTooltipModule]
+      imports: [MatTableModule, MatChipsModule, MatTooltipModule, MatButtonModule, MatIconModule]
     })
   });
 
@@ -56,13 +58,13 @@ describe('BankListComponent', () => {
 
     beforeEach(() => {
       owned = [
-        {name_fr: 'Pitchu', name_en: 'Pitchu', userPseudo: 'admin', tags: []},
-        {name_fr: 'Poke2', name_en: 'Poke2', userPseudo: 'admin', tags: [
+        {_id: 'idpoke1', name_fr: 'Pitchu', name_en: 'Pitchu', userPseudo: 'admin', tags: []},
+        {_id: 'idpoke2', name_fr: 'Poke2', name_en: 'Poke2', userPseudo: 'admin', tags: [
           {name_fr: 'Ability1', type: 'ability'},
           {name_fr: 'Nature1', type: 'nature'},
           {name_fr: 'Move1', type: 'move'}
         ]},
-        {name_fr: 'Poke3', name_en: 'Poke3', userPseudo: 'admin', tags: [
+        {_id: 'idpoke3', name_fr: 'Poke3', name_en: 'Poke3', userPseudo: 'admin', tags: [
           {name_fr: 'Ability2', type: 'ability'},{name_fr: 'Ability3', type: 'ability'},
           {name_fr: 'Nature2', type: 'nature'},{name_fr: 'Nature3', type: 'nature'},
           {name_fr: 'Move2', type: 'move'},{name_fr: 'Move3', type: 'move'}
@@ -108,6 +110,33 @@ describe('BankListComponent', () => {
           data: owned[0]});
       });
     }));
+
+    describe('column option', () => {
+      let firstPokeDelBtn;
+
+      beforeEach(() => {
+        firstPokeDelBtn = fixture.debugElement.nativeElement
+          .querySelector('#bank-table tbody tr:first-child .col-type-options .bank-list-del-btn');
+
+        spyDeletePokemon.mockClear();
+      });
+
+      it('should have a delete button', async(() => {
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          expect(firstPokeDelBtn).toBeTruthy();
+        });
+      }));
+
+      it('should call the service with the pokemon id to be deleted', async(() => {
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          firstPokeDelBtn.click();
+          expect(spyDeletePokemon).toHaveBeenCalledWith('idpoke1');
+        });
+      }));
+
+    });
     
     describe('columns without a tag given', () => {
       const columns = ['ability', 'nature', 'move']
@@ -162,7 +191,7 @@ describe('BankListComponent', () => {
   }));
 
   describe('headers', () => {
-    const columnNames = ['Espèce', 'Talent(s)', 'Nature(s)', 'Attaque(s)']
+    const columnNames = ['Espèce', 'Talent(s)', 'Nature(s)', 'Attaque(s)', 'Options']
     columnNames.forEach((columnName, index) => {
       it('should have the first column with the header '+columnName, async(() => {
         fixture.whenStable().then(() => {

@@ -237,18 +237,13 @@ Then('le détail n\'est pas affiché', () => {
 });
 
 When('je clique sur l\'option de suppression du pokemon dont l\'identifiant est {string}', (idPoke) => {
-  I.click("#owned-poke-"+idPoke+" td.bank-opts .bank-delete-opt");
+  I.click("#owned-poke-"+idPoke+" td.col-type-options .bank-list-del-btn");
 });
 
 Then('le pokemon avec l\'identifiant {string} n\'est pas affiché dans la banque', (idPoke) => {
   I.dontSeeElement("#owned-poke-"+idPoke);
 });
 
-Then('le pokemon avec l\'identifiant {string} n\'existe pas', async(idPoke) => {
-  let p = await OwnedPokemonModel.find({_id: idPoke});
-  assert.equal(p.length, 0);
-});
-
 Then('le pokemon avec l\'identifiant {string} a un option de suppression', (idPoke) => {
-  I.seeElement("#owned-poke-"+idPoke+" td.bank-opts .bank-delete-opt");
+  I.seeElement("#owned-poke-"+idPoke+" td.col-type-options .bank-list-del-btn");
 });

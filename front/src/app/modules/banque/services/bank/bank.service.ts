@@ -42,4 +42,14 @@ export class BankService {
         this.subOwnedPokemons.next(JSON.parse(JSON.stringify(this.cachedOwnedPkemons)));
     }
 
+    deleteOwnedPokemon(idpoke: string): void{
+        const header = this.httpob.getHeader();
+        this.http.delete(this.url+'/'+idpoke, {headers: header})
+            .subscribe((result) => {
+                const index = this.cachedOwnedPkemons.findIndex((p) => p._id === idpoke);
+                this.cachedOwnedPkemons.splice(index,1);
+                this.dispatchUpdate();
+            });
+    }
+
 }

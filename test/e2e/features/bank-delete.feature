@@ -13,4 +13,3 @@ Feature: suppresion d'un pokemon dand la banque
         And je suis sur l'écran de ma banque
         When je clique sur l'option de suppression du pokemon dont l'identifiant est "5d5c189123b3584286c63f29"
         Then le pokemon avec l'identifiant "5d5c189123b3584286c63f29" n'est pas affiché dans la banque
-        And le pokemon avec l'identifiant "5d5c189123b3584286c63f29" n'existe pas

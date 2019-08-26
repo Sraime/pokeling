@@ -2,15 +2,21 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { BankService } from './bank.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { HttpOptionsBuilder } from '../../../auth/libs/HttpOptionsBuilder/HttpOptionsBuilder'
+import { environment } from '../../../../../environments/environment';
 
 
 describe('BankService', () => {
   const spyGet = jest.fn();
   const spyPost = jest.fn();
+  const spyDelete = jest.fn();
   const spyGetHeader = jest.fn();
+  const BASE_URL = environment.api.bank.url;
   let service: BankService;
+
+  const buildedHeader = {};
+  spyGetHeader.mockReturnValue(buildedHeader);
 
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
@@ -18,7 +24,8 @@ describe('BankService', () => {
         provide: HttpClient,
         useValue: {
           get: spyGet,
-          post: spyPost
+          post: spyPost,
+          delete: spyDelete
         }
       }, 
       {
@@ -59,8 +66,6 @@ describe('BankService', () => {
   });
 
   describe('addOwnedPokemon()', () => {
-    const buildedHeader = {};
-    spyGetHeader.mockReturnValue(buildedHeader);
 
     beforeEach(() => {
       spyPost.mockReturnValue(of(null));
@@ -101,6 +106,44 @@ describe('BankService', () => {
         done();
       })
       service.dispatchUpdate();
+    });
+  });
+
+  describe('deleteOwnedPokemon()', () => {
+    const existingPoke = [
+      {_id: 'idpoke', name_fr: '', userPseudo: '', tags: []}
+    ]
+    beforeEach(() => {
+      service.cachedOwnedPkemons = existingPoke;
+      spyDelete.mockClear();
+      spyDelete.mockReturnValue(of(null));
+    });
+
+    it('should resquest the backend for deleting the pokemon', () => {
+      service.deleteOwnedPokemon('idpoke');
+      expect(spyDelete).toHaveBeenCalled();
+      expect(spyDelete).toHaveBeenCalledWith(
+        BASE_URL+'/idpoke', 
+        {headers: buildedHeader});
+    });
+
+    it('should remove the pokemon from the cached list when operation succed', () => {
+      service.deleteOwnedPokemon('idpoke');
+      expect(service.cachedOwnedPkemons).toEqual([]);
+    });
+
+    it('should dispatch the deletion to all subscribers', (done) => {
+      service.getObsevableOwnedPokemons().subscribe((list) => {
+        expect(list).toEqual([]);
+        done();
+      })
+      service.deleteOwnedPokemon('idpoke');
+    });
+
+    it('should not change de cached list if the operation fails', () => {
+      spyDelete.mockReturnValue(throwError(new Error()))
+      service.deleteOwnedPokemon('notExistingId');
+      expect(service.cachedOwnedPkemons).toEqual(existingPoke);
     });
   });
 });
