@@ -10,7 +10,7 @@ Feature: consultation de la banque
 
     Scenario: affichage de la liste
         When je me rend sur l'écran de ma banque
-        Then la liste de mes pokemons est affichée
+        Then la liste des pokemons est affichée
         And la colonne "Espèce" est en position "1" de la banque
         And la colonne "Talent(s)" est en position "2" de la banque
         And la colonne "Nature(s)" est en position "3" de la banque
@@ -20,7 +20,7 @@ Feature: consultation de la banque
     Scenario: affichage d'un pokemon sans tags dans la banque
         Given l'utilisateur "Test" possède le pokemon "PokeTest"
         When je me rend sur l'écran de ma banque
-        Then la liste de mes pokemons contient l'espèce "PokeTest"
+        Then la liste des pokemons contient l'espèce "PokeTest"
 
     Scenario Outline: affichage d'un pokemon avec tags simples
         Given l'utilisateur "Test" possède le pokemon "PokeTest"

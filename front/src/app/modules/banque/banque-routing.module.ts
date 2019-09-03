@@ -5,7 +5,8 @@ import { BankPageComponent } from './components/bank-page/bank-page.component';
 
 
 const routes: Routes = [
-  { path: 'bank', component: BankPageComponent, canActivate: [LoginActivate]}
+  { path: 'bank', component: BankPageComponent, canActivate: [LoginActivate]},
+  { path: 'bank/:pseudo', component: BankPageComponent}
 ];
 
 @NgModule({

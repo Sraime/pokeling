@@ -133,12 +133,16 @@ When('je suis sur l\'écran de ma banque', () => {
   I.amOnPage(config.front.url+'/bank');
 });
 
-Then('la liste de mes pokemons est affichée', () => {
+Then('la liste des pokemons est affichée', () => {
   I.seeElement('#bank-table');
 });
 
-Then('la liste de mes pokemons contient l\'espèce {string}', (espece) => {
+Then('la liste des pokemons contient l\'espèce {string}', (espece) => {
   I.see(espece, {css: '#bank-table'});
+});
+
+Then('la liste des pokemons ne contient pas l\'espèce {string}', (espece) => {
+  I.dontSee(espece, {css: '#bank-table'});
 });
 
 Then('la colonne {string} est en position {string} de la banque', (columnName, position) => {
@@ -246,4 +250,12 @@ Then('le pokemon avec l\'identifiant {string} n\'est pas affiché dans la banque
 
 Then('le pokemon avec l\'identifiant {string} a un option de suppression', (idPoke) => {
   I.seeElement("#owned-poke-"+idPoke+" td.col-type-options .bank-list-del-btn");
+});
+
+When('je me rend sur la banque de l\'utilisateur {string}', (userPseudo) => {
+  I.amOnPage(config.front.url+'/bank/'+userPseudo);
+});
+
+Then('le titre de la page est {string}', (title) => {
+  I.see(title, '.page-title');
 });

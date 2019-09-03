@@ -25,7 +25,7 @@ describe('BankListComponent', () => {
           provide: BankService,
           useValue: {
             getObsevableOwnedPokemons: spyGetOwned,
-            updateList: spyUpdateListOwned,
+            fetchData: spyUpdateListOwned,
             deleteOwnedPokemon: spyDeletePokemon
           },
         },
@@ -201,5 +201,22 @@ describe('BankListComponent', () => {
         });
       }));
     })
+  });
+
+  describe('configured user pseudo', () => {
+    it('should not have a column option if the onUserPseudo input has been set', async(() => {
+      component.onUserPseudo = 'admin';
+      component.ngOnInit();
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const col = fixture.debugElement.nativeElement.querySelector('#bank-table th:nth-child(5)');
+        expect(col).toBeFalsy();
+      });
+    }));
+    
+    it('should call the service with the configured userPseudo', async(() => {
+      component.onUserPseudo = 'admin';
+      expect(spyGetOwned).toHaveBeenCalledWith('admin');
+    }));
   });
 });

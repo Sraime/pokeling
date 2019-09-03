@@ -1,2 +1,8 @@
-<app-bank-form></app-bank-form>
-<app-bank-list></app-bank-list>
+<h2 class="page-title">Banque de {{targetUserPseudo}}</h2>
+<ng-container *ngIf="targetUserPseudo">
+    <app-bank-list [userPseudo]="targetUserPseudo" ></app-bank-list>
+</ng-container>
+<ng-container *ngIf="!targetUserPseudo">
+    <app-bank-form></app-bank-form>
+    <app-bank-list></app-bank-list>
+</ng-container>

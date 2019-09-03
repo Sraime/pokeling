@@ -45,6 +45,6 @@
             <button mat-button color="warn" (click)="deletePokemon(element._id, $event)" class="bank-list-del-btn"><mat-icon>close</mat-icon></button>
         </td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['espece','ability','nature','move', 'options']"></tr>
-    <tr mat-row (click)="selectRow(row)" id="owned-poke-{{row._id}}" *matRowDef="let row; columns: ['espece','ability','nature','move', 'options'];"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (click)="selectRow(row)" id="owned-poke-{{row._id}}" *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>

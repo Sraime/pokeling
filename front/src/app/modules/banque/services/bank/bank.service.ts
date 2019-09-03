@@ -18,11 +18,13 @@ export class BankService {
     
     cachedOwnedPkemons: Array<OwnedPokemon> = [];
 
-    getObsevableOwnedPokemons() : Subject<Array<OwnedPokemon>> {
-        return this.subOwnedPokemons;
+    getObsevableOwnedPokemons(userPseudo: String = null) : Observable<Array<OwnedPokemon>> {
+        return ! userPseudo ? 
+            this.subOwnedPokemons
+            : this.http.get<Array<OwnedPokemon>>(this.url+'/'+userPseudo);
     }
 
-    updateList(): void{
+    fetchData(): void{
         this.http.get<Array<OwnedPokemon>>(this.url).subscribe( (ops) => {
             this.cachedOwnedPkemons = ops;
             this.dispatchUpdate();

@@ -45,10 +45,10 @@ describe('BankService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('updateList()', () => {
+  describe('fetchData()', () => {
 
     it('should send a get request with the http client', () => {
-      service.updateList();
+      service.fetchData();
       expect(spyGet).toHaveBeenCalled();
     });
 
@@ -59,7 +59,7 @@ describe('BankService', () => {
       service.getObsevableOwnedPokemons().subscribe((r) => {
         dataSubscriberCall = r;
       });
-      service.updateList();
+      service.fetchData();
       expect(dataSubscriberCall).toEqual(returnedOwnedPokemons);
     });
     
@@ -144,6 +144,23 @@ describe('BankService', () => {
       spyDelete.mockReturnValue(throwError(new Error()))
       service.deleteOwnedPokemon('notExistingId');
       expect(service.cachedOwnedPkemons).toEqual(existingPoke);
+    });
+  });
+
+  describe('getObsevableOwnedPokemons', () => {
+    
+    it('should return the stored Subject for no specific user', () => {
+      const obs = service.getObsevableOwnedPokemons();
+      expect(obs).toEqual(service.subOwnedPokemons);
+    });
+    
+    it('should return a service call if it is for a specific user', (done) => {
+      spyGet.mockReturnValue(of(null));
+      service.getObsevableOwnedPokemons('admin')
+      .subscribe((data) => {
+        expect(spyGet).toHaveBeenCalledWith(BASE_URL+'/admin');
+        done();
+        })
     });
   });
 });

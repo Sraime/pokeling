@@ -43,4 +43,4 @@ Feature: ajout d'un pokemon à la ma banque
         When je selectionne la valeur d'autocompletion "Poke1" pour le champ "pokemon"
         And je selectionne la valeur d'autocompletion "Tag1" pour le champ "tags"
         And Je valide l'ajout du pokemon dans ma banque
-        Then la liste de mes pokemons contient l'espèce "Poke1"
+        Then la liste des pokemons contient l'espèce "Poke1"
