@@ -203,7 +203,7 @@ describe('/bank', () => {
         });
     });
 
-    describe('DELETE /bank/idPoke', () => {
+    describe('DELETE /bank/:idPoke', () => {
 
         let reqOptions = {
             json: true,
@@ -265,4 +265,55 @@ describe('/bank', () => {
         });
 
     });
+
+    describe('GET /bank/:userName', () => {
+
+        let reqOptions;
+    
+        beforeEach(() => {
+            reqOptions = {
+                json: true,
+                uri: BASE_URI+'/bank',
+                method: 'GET',
+            }
+        });
+
+        const ownedPokemons = [
+            {name_fr: 'Pitchu', name_fr: 'Pitchu', userPseudo: 'admin', tags: []},
+            {name_fr: 'Pitchu', name_fr: 'Pitchu', userPseudo: 'admin', tags: [
+                {name_fr: 'Super Ball', name_en: 'Super Ball', type: 'ball'}
+            ]},
+            {name_fr: "Pitchu", name_fr: "Pitchu", userPseudo: 'admin', tags: [
+                {name_fr: 'Super Ball', name_en: 'Super Ball', type: 'ball'},
+                {name_fr: 'Brave', name_en: 'Brave', type: 'nature'}
+            ]}
+        ];
+
+        let savedOwnedPokemons;
+
+        beforeAll(async() => {
+            savedOwnedPokemons = await OwnedPokemonModel.insertMany(ownedPokemons)
+            savedOwnedPokemons = savedOwnedPokemons.map((e) => JSON.parse(JSON.stringify(e)));
+        });
+
+        afterAll(async() => {
+            await OwnedPokemonModel.deleteMany({});
+        });
+
+        it('should return the list of owned pokemons when the user exist', async () => {
+            reqOptions.uri = reqOptions.uri+'/admin';
+            const r = await request(reqOptions);
+            expect(r).toEqual(savedOwnedPokemons);
+        });
+        
+        it('should return a 404 error when the user does not exist', async () => {
+            reqOptions.uri = reqOptions.uri+'/notExistingUser';
+            try{
+                const r = await request(reqOptions);
+            } catch(e) {
+                expect(e.statusCode).toEqual(404);
+            }
+        });
+
+    })
 });

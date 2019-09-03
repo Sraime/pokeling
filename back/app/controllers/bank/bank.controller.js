@@ -1,11 +1,13 @@
 const bankService = require('../../services/bank/bank.service');
 const pokemonService = require('../../services/pokemon/pokemon.service');
 const tagService = require('../../services/tag/tag.service');
+const userService = require('../../services/users/user.service');
 
 const BankController = {
 
     getOwnedPokemons: async(req, res) => {
-        let pokes = await bankService.getOwned(req.user.pseudo);
+        const userPseudo = req.params.pseudo ? req.params.pseudo  : req.user.pseudo;
+        let pokes = await bankService.getOwned(userPseudo);
         res.json(pokes);
     },
 
@@ -30,6 +32,14 @@ const BankController = {
             return res.send();
         }
         res.send({});
+    },
+
+    getUserOwnedPokemons: async(req, res) => {
+        const user = await userService.getUserByPseudo(req.params.pseudo);
+        if(user)
+            return await BankController.getOwnedPokemons(req, res, req.params.pseudo)
+        res.status(404);
+        res.send();
     }
 }
 

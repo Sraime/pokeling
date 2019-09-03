@@ -18,6 +18,12 @@ services:
       - mongo
     volumes:
       - ./back:/pokelink_back
+    environment:
+      NODE_ENV: prod
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_NAME: pokelink
+      AUTH_SECRET: randomsecretpassword
 
   pokelink_front:
     build: ./front

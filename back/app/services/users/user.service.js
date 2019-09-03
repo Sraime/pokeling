@@ -14,6 +14,10 @@ const UserService = {
     insertUser: async (user) => {
         let nu = new UserModel(user);
         return nu.save();
+    },
+
+    getUserByPseudo(pseudo) {
+        return UserModel.findOne({pseudo: pseudo});
     }
 }
 

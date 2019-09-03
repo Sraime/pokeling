@@ -2,6 +2,7 @@ const bankService = require('../../services/bank/bank.service');
 const pokemonService = require('../../services/pokemon/pokemon.service');
 const bankController = require('./bank.controller');
 const tagService = require('../../services/tag/tag.service');
+const userService = require('../../services/users/user.service');
 
 describe('bank.controller', () => {
     let res;
@@ -14,7 +15,8 @@ describe('bank.controller', () => {
             status: jest.fn()
         }
         req = {
-            user: {pseudo: 'admin'}
+            user: {pseudo: 'admin'},
+            params: {}
         }
     });
 
@@ -142,4 +144,35 @@ describe('bank.controller', () => {
             expect(res.send).toHaveBeenCalled();
         });
     });
+
+    describe('getUserOwnedPokemons', () => {
+
+        // doit retourner appeler le service et retourner son result quand le user exist
+
+        let spyGetUserByPseudo = jest.spyOn(userService, 'getUserByPseudo');
+        let spyGetOwned = jest.spyOn(bankService, 'getOwned');
+        beforeEach(() => {
+            spyGetUserByPseudo.mockClear();
+            spyGetOwned.mockClear();
+        });
+        
+        it('should send a 404 statusCode if the user does not exist', async () => {
+            spyGetUserByPseudo.mockReturnValue(null);
+            req.params = {pseudo: 'notExistingUser'};
+            await bankController.getUserOwnedPokemons(req, res);
+            expect(res.status).toHaveBeenCalledWith(404);
+            expect(res.send).toHaveBeenCalled();
+        });
+
+        it('should return the list of owned pokemon when the user exist', async () => {
+            req.params = {pseudo: 'admin'}
+            spyGetUserByPseudo.mockReturnValue({pseudo: req.params.pseudo});
+            const ownedPokes = [{name_fr: 'pikachu'}];
+            spyGetOwned.mockReturnValue(ownedPokes);
+            await bankController.getUserOwnedPokemons(req, res);
+            expect(res.json).toHaveBeenCalledWith(ownedPokes);
+        });
+
+
+    })
 });
