@@ -221,8 +221,8 @@ describe('BankFormComponent', () => {
       spyAddOwnedPokemon.mockReturnValue(of(null));
     });
 
-    it('should have a button for submiting the new owned pokemon', () => {
-      expect(btn).toBeTruthy();
+    it('should have a button "Ajouter" for submiting the new owned pokemon', () => {
+      expect(btn.nativeElement.textContent).toEqual('Ajouter');
     });
 
     it('should have submit button disabled when the pokemon is empty', () => {

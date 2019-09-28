@@ -1,5 +1,5 @@
-<h2 class="page-title">Banque de {{targetUserPseudo}}</h2>
 <ng-container *ngIf="targetUserPseudo">
+    <h2 class="page-title">Banque de {{targetUserPseudo}}</h2>
     <app-bank-list [userPseudo]="targetUserPseudo" ></app-bank-list>
 </ng-container>
 <ng-container *ngIf="!targetUserPseudo">

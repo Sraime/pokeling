@@ -43,18 +43,18 @@ describe('BankPageComponent', () => {
     expect(spyGetParamMap).toHaveBeenCalledWith('pseudo');
     expect(component.targetUserPseudo).toEqual('admin');
   });
+
+  describe('add form', () => {
+
+    it('should display the form when the target user has not been set', async(() => {
+      component.targetUserPseudo = null;
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const form = fixture.debugElement.query(By.css('app-bank-form'));
+        expect(form).toBeTruthy();
+      });
+    }));
   
-  it('should display the form when the target user has not been set', async(() => {
-    component.targetUserPseudo = null;
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const form = fixture.debugElement.query(By.css('app-bank-form'));
-      expect(form).toBeTruthy();
-    });
-  }));
-
-  describe('user pseudo is set', () => {
-
     it('should not display the form when the target user has been set', async(() => {
       component.targetUserPseudo = 'Toto';
       fixture.whenStable().then(() => {
@@ -63,6 +63,18 @@ describe('BankPageComponent', () => {
         expect(form).toBeFalsy();
       });
     }));
+
+  });
+
+  describe('welcome message', () => {
+    
+    it('should not display the welcome message when the target user is not set', async(() => {
+      fixture.whenStable().then(() => {
+        fixture.detectChanges();
+        const pageTitle = fixture.debugElement.query(By.css('.page-title'));
+        expect(pageTitle).toBeFalsy();
+      });
+    }))
     
     it('should display a welcome message with the pseudo of the target user', async(() => {
       component.targetUserPseudo = 'Toto';
